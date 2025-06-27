@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Petit quiz pour ma cherie d'amour 💖</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: #ffe6f0;
+      color: #d10068;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    img {
+      width: 250px;
+      height: auto;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(255, 192, 203, 0.6);
+    }
+    .question {
+      margin: 20px 0;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      background-color: #ff99c8;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    #result, #error {
+      margin-top: 30px;
+      font-size: 1.2em;
+      background-color: #fff0f5;
+      padding: 20px;
+      border-radius: 15px;
+      display: none;
+    }
+    #error {
+      color: red;
+      background-color: #ffe0e0;
+    }
+
+    #startMusicBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #ffffff;
+      color: #d10068;
+      border: 2px solid #ff69b4;
+      font-size: 0.9em;
+      padding: 8px 14px;
+    }
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+    <!-- 🎵 Bouton pour démarrer la musique -->
+  <button id="startMusicBtn" onclick="startMusic()">🎵 Activer la musique</button>
+
+  <!-- 🎵 Musique douce -->
+  <audio id="audio" loop>
+    <source src="evidence.mp3" type="audio/mp3">
+    Votre navigateur ne supporte pas l'audio.
+  </audio>
+  
+  <script>
+    let currentPage = 0;
+    const pages = document.querySelectorAll('.page');
+  
+    function nextPage() {
+      pages[currentPage].classList.remove('active');
+      currentPage++;
+      if (currentPage < pages.length) {
+        pages[currentPage].classList.add('active');
+      } else {
+        currentPage = 0;
+        pages[currentPage].classList.add('active');
+      }
+    }
+  
+    // 🔊 Démarrer la musique après interaction utilisateur
+    document.body.addEventListener('click', () => {
+      const audio = document.getElementById('audio');
+      if (audio && audio.paused) {
+        audio.play().catch(() => {});
+      }
+    }, { once: true });
+  </script>
+  
+
+  <h1>Pour toi, Jadi 💕</h1>
+  <img src="Jo.jpg" alt="Photo de nous deux">
+  <p>Un petit quiz pour la femme la plus chère a mes yeux 💌</p>
+
+  <div class="question" id="q1">
+    <p><strong>1. Où avons-nous passé un moment inoubliable ?</strong></p>
+    <button onclick="answer(1, true)">Dans une salle de cinema</button>
+    <button onclick="answer(1, false)">À la bibliothèque 📚</button>
+  </div>
+
+
+  <div class="question" id="q2" style="display:none;">
+    <p><strong>2. Quelle est ma couleur préférée ?</strong></p>
+    <button onclick="answer(2, false)">Rouge</button>
+    <button onclick="answer(2, true)">Bleu</button>
+  </div>
+
+  <div class="question" id="q3" style="display:none;">
+    <p><strong>3. Que signifie "Jadelie" pour moi ?</strong></p>
+    <button onclick="answer(3, false)">Un prénom parmi tant d'autres</button>
+    <button onclick="answer(3, true)">Mon trésor, mon amour, ma lumière ✨</button>
+  </div>
+
+  <div class="question" id="q4" style="display:none;">
+    <p><strong>4. Où nous sommes-nous rencontrés ?</strong></p>
+    <button onclick="answer(4, true)">Sur les reseaux sociaux</button>
+    <button onclick="answer(4, false)">À l'école</button>
+  </div>
+
+  <div class="question" id="q5" style="display:none;">
+    <p><strong>5. Devine ce que j’aime chez toi ?</strong></p>
+    <button onclick="answer(5, false)">ton intelligence</button>
+    <button onclick="answer(5, true)">Ton sourire </button>
+  </div>
+
+
+  <div id="result">
+    <h2>💖 Bravo mon doudou 💖</h2>
+    <p>
+      Tu as répondu avec le cœur, et c’est tout ce qui compte.  
+      <br><br>
+      Jade, chaque bon souvenir, chaque sourire, chaque regard me ramène à toi.  
+      <br>
+      Ce jeu n'est qu’un prétexte pour te dire que je t’aime profondément, aujourd’hui et pour toujours.  
+      <br><br>
+       Ton amour Joachim qui t'aime tant💘
+    </p>
+  </div>
+
+  <div id="error">
+    <h2>Oups doudou... 😢</h2>
+    <p>Tu t’es peut-être trompée, mon amour… mais tu peux toujours recommencer 💞</p>
+    <button onclick="restart()">Recommencer le quiz</button>
+  </div>
+
+  <script>
+    let answers = {};
+
+    function answer(question, isCorrect) {
+      answers[question] = isCorrect;
+      document.getElementById("q" + question).style.display = "none";
+
+      let next = question + 1;
+      if (next <= 5) {
+        document.getElementById("q" + next).style.display = "block";
+      } else {
+        if (answers[1] && answers[2] && answers[3] && answers[4] && answers[5]) {
+          document.getElementById("result").style.display = "block";
+        } else {
+          document.getElementById("error").style.display = "block";
+        }
+      }
+    }
+
+    function restart() {
+      // Réinitialiser
+      answers = {};
+      document.getElementById("q1").style.display = "block";
+      document.getElementById("q2").style.display = "none";
+      document.getElementById("q3").style.display = "none";
+      document.getElementById("result").style.display = "none";
+      document.getElementById("error").style.display = "none";
+    }
+  </script>
+</body>
+</html>
